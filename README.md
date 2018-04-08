@@ -1,5 +1,5 @@
 # CathayPacificAuto
-To automate the task of finding minimal cost for flight with Cathay Pacific.
+To automate the task of finding minimal cost for flight with Cathay Pacific.<br/>
 This tool currently available on MacOS.
 
 ## Development
@@ -9,10 +9,10 @@ This tool currently available on MacOS.
 - [ ] Report dates with minimal cost
 
 ## Prerequisites
-Firefox
-Geckodriver
-Selenium
-Python3
+Firefox<br/>
+Geckodriver<br/>
+Selenium<br/>
+Python3<br/>
 
 ## Installation
 ```
