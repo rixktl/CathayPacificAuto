@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
 
-'''
- Prerequisites:
- Firefox
- brew install geckodriver
- pip3 install selenium
-'''
-
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
@@ -65,6 +58,7 @@ class CathayPacificBrowserDriver(BrowserDriver):
         destLabel.send_keys(self.__dest)
 
     def selectDates(self):
+        # TODO: WIP
         # divs = self.__driver.find_elements_by_xpath("//div[@class='button-date-picker-wrapper field-group cx-inputfield']")
         departIdent = "//span[contains(text(), 'Departing on')]/following-sibling::button"
         departBtnList = self.__driver.find_elements_by_xpath(departIdent)
