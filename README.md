@@ -27,3 +27,6 @@ pip3 install selenium
 chmod +x ./main.py
 ./main.py
 ```
+
+## License
+MIT, see [License](LICENSE)
