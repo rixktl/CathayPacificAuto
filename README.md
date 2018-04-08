@@ -4,7 +4,8 @@ This tool currently available on MacOS.
 
 ## Development
 - [x] Filling in departure and destination
-- [ ] Select dates
+- [x] Select dates
+- [x] Submit form
 - [ ] Brute force for minimal cost
 - [ ] Report dates with minimal cost
 
