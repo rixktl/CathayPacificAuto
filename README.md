@@ -1,6 +1,7 @@
 # CathayPacificAuto
 To automate the task of finding minimal cost for flight with Cathay Pacific.<br/>
 This tool currently available on MacOS.
+![Demo](https://github.com/rixktl/CathayPacificAuto/raw/master/preview.gif)
 
 ## Development
 - [x] Filling in departure and destination
