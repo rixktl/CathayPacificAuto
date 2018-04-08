@@ -2,6 +2,7 @@
 
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+import time
 
 class BrowserDriver:
     def __init__(self, headless = True):
@@ -24,6 +25,9 @@ class BrowserDriver:
 
 
 class CathayPacificBrowserDriver(BrowserDriver):
+    months = dict(January=1, Febuary=2, March=3, April=4, May=5, June=6, \
+    July=7, August=8, September=9, October=10, November=11, December=12)
+
     def __init__(self, headless = True):
         super().__init__(headless)
         self.__driver = super().getDriver()
@@ -37,12 +41,21 @@ class CathayPacificBrowserDriver(BrowserDriver):
         return self.__depart
 
     @property
+    def departDate(self):
+        return self.__departDate
+
+    @property
     def dest(self):
         return self.__dest
 
     @depart.setter
     def depart(self, val):
         self.__depart = val
+
+    # Assume to be in form of {"month": "04", "day": "08"}
+    @departDate.setter
+    def departDate(self, val):
+        self.__departDate = val
 
     @dest.setter
     def dest(self, val):
@@ -57,23 +70,44 @@ class CathayPacificBrowserDriver(BrowserDriver):
         destLabel.click()
         destLabel.send_keys(self.__dest)
 
-    def selectDates(self):
-        # TODO: WIP
-        # divs = self.__driver.find_elements_by_xpath("//div[@class='button-date-picker-wrapper field-group cx-inputfield']")
+    def selectDepartDates(self):
+        # Start the datepicker
         departIdent = "//span[contains(text(), 'Departing on')]/following-sibling::button"
         departBtnList = self.__driver.find_elements_by_xpath(departIdent)
         departBtnList[1].click() # First button is fake, only the second one is real
-        input('waiting for you to press any key...')
+
+        # Select month
+        monthIdent = "//span[@class='ui-datepicker-month']"
+        monthList = self.__driver.find_elements_by_xpath(monthIdent)
+        currentMonth = CathayPacificBrowserDriver.months[(monthList[2].text)]
+        diff = int(self.__departDate['month']) - currentMonth # Only second text is visible
+        if (diff < 0): raise Exception('Month of departer has passed. You can\'t go back in time')
+
+        # Jump to correct month
+        if (diff > 1):
+            for i in range(0, diff):
+                nextBtnIdent = "//a[@data-handler='next']"
+                nextBtnList = self.__driver.find_elements_by_xpath(nextBtnIdent)
+                nextBtnList[1].click() # First button is fake, only the second one is real
+
+        # Select day
+        monthCalendarIdent = "//div[@class='ui-datepicker-group ui-datepicker-group-first']"
+        monthCalendarList = self.__driver.find_elements_by_xpath(nextBtnIdent)
+        dayIdent = "//td[.//a[contains(text(), '" + str(self.__departDate['day']) + "')]]"
+        dayList = monthCalendarList[1].find_elements_by_xpath(dayIdent) # Second one is valid
+        dayList[2].click() # Third one is valid
 
     def request(self):
         self.__driver.get(self.__URL)
         self.fillLocations()
-        self.selectDates()
+        self.selectDepartDates()
+        input('waiting for you to press any key...')
 
 
 def main():
     CPBDriver = CathayPacificBrowserDriver(headless = False)
     CPBDriver.depart = 'San Diego, (SAN)'
+    CPBDriver.departDate = {'month': '12', 'day': '11'}
     CPBDriver.dest = 'Hong Kong, (HKG)'
     CPBDriver.request()
 
